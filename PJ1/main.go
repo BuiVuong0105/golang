@@ -3,10 +3,12 @@ package main
 import (
 	"family/service"
 	"fmt"
+	"reflect"
 	"strconv"
 )
 
 func main() {
+	// anynomousStruct()
 	handleStruct()
 	// handleVariable()
 	// handleArray()
@@ -14,11 +16,21 @@ func main() {
 	// handleMap()
 }
 
+func anynomousStruct() {
+	// studentAnynomouse := struct{ name string }{} // Cach 1
+	var studentAnynomouse struct{ name string } = struct{ name string }{}   // cach 2
+	var structAnynomousePointer *struct{ name string } = &studentAnynomouse // khoi tao con tro
+	fmt.Printf("studentAnynomouse: %v, %T\n", studentAnynomouse, studentAnynomouse)
+	fmt.Printf("studentAnynomouse: %v, %T\n", structAnynomousePointer, structAnynomousePointer)
+}
+
 func handleStruct() {
 	var studentVuong = service.Student{
 		Id:      1,
 		Name:    "Vuong",
 		Subject: []string{"Ly"},
+		Address: service.Address{Location: "aaaa"},
+		Point:   100,
 	}
 	fmt.Printf("STUDENT VUONG: %v, %T\n", studentVuong, studentVuong)
 	var studentNam = &studentVuong // sử dụng con trỏ studentNam trỏ đến studentVuong => studentdentNam có thể thay đổi studentVuong
@@ -27,6 +39,11 @@ func handleStruct() {
 	studentNam.Name = "Nam"
 	fmt.Printf("STUDENT VUONG: %v, %T\n", studentVuong, studentVuong)
 	fmt.Printf("STUDENT Nam: %v, %T\n", *studentNam, *studentNam)
+
+	var typeOfStudent reflect.Type = reflect.TypeOf(studentVuong)
+	field, _ := typeOfStudent.FieldByName("Point")
+	fmt.Printf("typeOfStudent: %v, %T\n", typeOfStudent, typeOfStudent)
+	fmt.Printf("Anotaiton Point: %v", field)
 }
 
 func handleVariable() {
