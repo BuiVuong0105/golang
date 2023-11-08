@@ -16,6 +16,12 @@ func main() {
 	// handleMap()
 }
 
+// Truyền tham trị ( truyền giá trị vào sv, sv thay đổi thì param truyền vào ko đổi)
+func printSv(sv service.Student) {
+	sv.Name = "AAAA"
+	fmt.Printf("SV: %v \n", sv)
+}
+
 func anynomousStruct() {
 	// studentAnynomouse := struct{ name string }{} // Cach 1
 	var studentAnynomouse struct{ name string } = struct{ name string }{}   // cach 2
@@ -32,13 +38,18 @@ func handleStruct() {
 		Address: service.Address{Location: "aaaa"},
 		Point:   100,
 	}
+
+	// printSv(studentVuong)
+
 	fmt.Printf("STUDENT VUONG: %v, %T\n", studentVuong, studentVuong)
 	var studentNam = &studentVuong // sử dụng con trỏ studentNam trỏ đến studentVuong => studentdentNam có thể thay đổi studentVuong
 
 	fmt.Printf("STUDENT Nam: %v, %T\n", *studentNam, *studentNam)
 	studentNam.Name = "Nam"
+	fmt.Println("Name of StudentNam: ", studentNam.Name)
 	fmt.Printf("STUDENT VUONG: %v, %T\n", studentVuong, studentVuong)
-	fmt.Printf("STUDENT Nam: %v, %T\n", *studentNam, *studentNam)
+	fmt.Printf("STUDENT Nam Dia Chi: %v, %T\n", studentNam, studentNam) // in ra địa chỉ
+	fmt.Printf("STUDENT Nam: %v, %T\n", *studentNam, *studentNam)       // in ra giá trị được lưu tại địa chỉ mà con trỏ đang trỏ vào
 
 	var typeOfStudent reflect.Type = reflect.TypeOf(studentVuong)
 	field, _ := typeOfStudent.FieldByName("Point")
