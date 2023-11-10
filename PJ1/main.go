@@ -6,9 +6,34 @@ import (
 	"strconv"
 )
 
+type BaseLocation struct {
+	city     string
+	district string
+	ward     string
+	address  string
+}
+
+type School struct {
+	BaseLocation
+	name string
+}
+
+func handleExtend() {
+
+	school := &School{}
+	school.city = "Ha Noi"
+	school.district = "Hoai Duc"
+	school.ward = "An Khanh"
+	school.address = "Van Lung"
+	school.name = "An Khanh A"
+
+	fmt.Println("School Information: ", *school)
+}
+
 func main() {
+	handleExtend()
 	// anynomousStruct()
-	handleStruct()
+	// handleStruct()
 	// handleVariable()
 	// handleArray()
 	// handleSlice()
