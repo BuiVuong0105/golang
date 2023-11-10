@@ -3,7 +3,6 @@ package main
 import (
 	"family/service"
 	"fmt"
-	"reflect"
 	"strconv"
 )
 
@@ -39,7 +38,7 @@ func handleStruct() {
 		Point:   100,
 	}
 
-	// printSv(studentVuong)
+	printSv(studentVuong) // pass value not pass ref
 
 	fmt.Printf("STUDENT VUONG: %v, %T\n", studentVuong, studentVuong)
 	var studentNam = &studentVuong // sử dụng con trỏ studentNam trỏ đến studentVuong => studentdentNam có thể thay đổi studentVuong
@@ -51,10 +50,10 @@ func handleStruct() {
 	fmt.Printf("STUDENT Nam Dia Chi: %v, %T\n", studentNam, studentNam) // in ra địa chỉ
 	fmt.Printf("STUDENT Nam: %v, %T\n", *studentNam, *studentNam)       // in ra giá trị được lưu tại địa chỉ mà con trỏ đang trỏ vào
 
-	var typeOfStudent reflect.Type = reflect.TypeOf(studentVuong)
-	field, _ := typeOfStudent.FieldByName("Point")
-	fmt.Printf("typeOfStudent: %v, %T\n", typeOfStudent, typeOfStudent)
-	fmt.Printf("Anotaiton Point: %v", field)
+	// var typeOfStudent reflect.Type = reflect.TypeOf(studentVuong)
+	// field, _ := typeOfStudent.FieldByName("Point")
+	// fmt.Printf("typeOfStudent: %v, %T\n", typeOfStudent, typeOfStudent)
+	// fmt.Printf("Anotaiton Point: %v", field)
 }
 
 func handleVariable() {
@@ -138,10 +137,16 @@ func handleMap() {
 	fmt.Printf("MAP STUDENT: %v, %T\n", mapStudent, mapStudent)
 	delete(mapStudent, 1)
 	_, contain := mapStudent[1]
-	fmt.Printf("MAP STUDENT 1: %v, %T\n", mapStudent[1], mapStudent[1])
-	fmt.Printf("KEY 1: %v", contain)
+	fmt.Println("MAP STUDENT 1:", mapStudent[1])
+	fmt.Println("KEY 1", contain)
 
 	mapCoppyStudent := mapStudent // Như 1 con trỏ, trỏ đến map origin
-	fmt.Printf("MapCoppy: %v", mapCoppyStudent)
-	fmt.Printf("MapCoppy: %v", mapStudent)
+	changeMap(mapCoppyStudent)
+	fmt.Println("MapCoppy: ", mapCoppyStudent)
+	fmt.Println("MapStudent: ", mapStudent)
+}
+
+func changeMap(m map[int64]string) {
+	m[2] = "Tunng"
+	fmt.Println("RSP: ", m)
 }
