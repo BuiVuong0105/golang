@@ -3,18 +3,47 @@ package main
 import (
 	"family/pattern"
 	"fmt"
+	"reflect"
+	"strconv"
 )
 
+type BaseLocation struct {
+	city     string
+	district string
+	ward     string
+	address  string
+}
+
+type School struct {
+	BaseLocation
+	name string
+}
+
+func handleExtend() {
+
+	school := &School{}
+	school.city = "Ha Noi"
+	school.district = "Hoai Duc"
+	school.ward = "An Khanh"
+	school.address = "Van Lung"
+	school.name = "An Khanh A"
+
+	fmt.Println("School Information: ", *school)
+}
+
 func main() {
-	// ifEsleSwitchCase()
-	dependency()
-	// decorator()
 	// anynomousStruct()
 	// handleStruct()
 	// handleVariable()
 	// handleArray()
 	// handleSlice()
 	// handleMap()
+}
+
+// Truyền tham trị ( truyền giá trị vào sv, sv thay đổi thì param truyền vào ko đổi)
+func printSv(sv service.Student) {
+	sv.Name = "AAAA"
+	fmt.Printf("SV: %v \n", sv)
 }
 
 func dependency() {
@@ -59,27 +88,27 @@ func ifEsleSwitchCase() {
 // 	fmt.Printf("studentAnynomouse: %v, %T\n", structAnynomousePointer, structAnynomousePointer)
 // }
 
-// func handleStruct() {
-// 	var studentVuong = service.Student{
-// 		Id:      1,
-// 		Name:    "Vuong",
-// 		Subject: []string{"Ly"},
-// 		Address: service.Address{Location: "aaaa"},
-// 		Point:   100,
-// 	}
-// 	fmt.Printf("STUDENT VUONG: %v, %T\n", studentVuong, studentVuong)
-// 	var studentNam = &studentVuong // sử dụng con trỏ studentNam trỏ đến studentVuong => studentdentNam có thể thay đổi studentVuong
+func handleStruct() {
+	var studentVuong = service.Student{
+		Id:      1,
+		Name:    "Vuong",
+		Subject: []string{"Ly"},
+		Address: service.Address{Location: "aaaa"},
+		Point:   100,
+	}
+	fmt.Printf("STUDENT VUONG: %v, %T\n", studentVuong, studentVuong)
+	var studentNam = &studentVuong // sử dụng con trỏ studentNam trỏ đến studentVuong => studentdentNam có thể thay đổi studentVuong
 
-// 	fmt.Printf("STUDENT Nam: %v, %T\n", *studentNam, *studentNam)
-// 	studentNam.Name = "Nam"
-// 	fmt.Printf("STUDENT VUONG: %v, %T\n", studentVuong, studentVuong)
-// 	fmt.Printf("STUDENT Nam: %v, %T\n", *studentNam, *studentNam)
+	fmt.Printf("STUDENT Nam: %v, %T\n", *studentNam, *studentNam)
+	studentNam.Name = "Nam"
+	fmt.Printf("STUDENT VUONG: %v, %T\n", studentVuong, studentVuong)
+	fmt.Printf("STUDENT Nam: %v, %T\n", *studentNam, *studentNam)
 
-// 	var typeOfStudent reflect.Type = reflect.TypeOf(studentVuong)
-// 	field, _ := typeOfStudent.FieldByName("Point")
-// 	fmt.Printf("typeOfStudent: %v, %T\n", typeOfStudent, typeOfStudent)
-// 	fmt.Printf("Anotaiton Point: %v", field)
-// }
+	var typeOfStudent reflect.Type = reflect.TypeOf(studentVuong)
+	field, _ := typeOfStudent.FieldByName("Point")
+	fmt.Printf("typeOfStudent: %v, %T\n", typeOfStudent, typeOfStudent)
+	fmt.Printf("Anotaiton Point: %v", field)
+}
 
 // func handleVariable() {
 // 	var j float64 = 34.4
@@ -150,22 +179,22 @@ func ifEsleSwitchCase() {
 // 	// mapStudent = make(map[int64]string)
 // 	// mapStudent = map[int64]string{}
 
-// 	// Khởi tạo map với key là mảng
-// 	// var mapStudent2 = map[[3]int64]string{} // Không thể khởi tạo map với key là slice , phải sử dụng mảng
-// 	// fmt.Printf("MAP STUDENT2: %v, %T\n", mapStudent2, mapStudent2)
-// 	var mapStudent map[int64]string = map[int64]string{
-// 		1: "Lan",
-// 		2: "Hung",
-// 	}
-// 	mapStudent[2] = "Lam"
-// 	mapStudent[3] = "Tuan"
-// 	fmt.Printf("MAP STUDENT: %v, %T\n", mapStudent, mapStudent)
-// 	delete(mapStudent, 1)
-// 	_, contain := mapStudent[1]
-// 	fmt.Printf("MAP STUDENT 1: %v, %T\n", mapStudent[1], mapStudent[1])
-// 	fmt.Printf("KEY 1: %v", contain)
+	// Khởi tạo map với key là mảng
+	// var mapStudent2 = map[[3]int64]string{} // Không thể khởi tạo map với key là slice , phải sử dụng mảng
+	// fmt.Printf("MAP STUDENT2: %v, %T\n", mapStudent2, mapStudent2)
+	var mapStudent map[int64]string = map[int64]string{
+		1: "Lan",
+		2: "Hung",
+	}
+	mapStudent[2] = "Lam"
+	mapStudent[3] = "Tuan"
+	fmt.Printf("MAP STUDENT: %v, %T\n", mapStudent, mapStudent)
+	delete(mapStudent, 1)
+	_, contain := mapStudent[1]
+	fmt.Printf("MAP STUDENT 1: %v, %T\n", mapStudent[1], mapStudent[1])
+	fmt.Printf("KEY 1: %v", contain)
 
-// 	mapCoppyStudent := mapStudent // Như 1 con trỏ, trỏ đến map origin
-// 	fmt.Printf("MapCoppy: %v", mapCoppyStudent)
-// 	fmt.Printf("MapCoppy: %v", mapStudent)
-// }
+	mapCoppyStudent := mapStudent // Như 1 con trỏ, trỏ đến map origin
+	fmt.Printf("MapCoppy: %v", mapCoppyStudent)
+	fmt.Printf("MapCoppy: %v", mapStudent)
+}
