@@ -2,9 +2,9 @@ package main
 
 import (
 	"family/pattern"
+	"family/service"
 	"fmt"
 	"reflect"
-	"strconv"
 )
 
 type BaseLocation struct {
@@ -38,6 +38,52 @@ func main() {
 	// handleArray()
 	// handleSlice()
 	// handleMap()
+	deferEx()
+}
+
+// Thưc hiện lệnh sau defer trước khi hàm return (đưa lệnh vào stack)
+// Panic là từ khóa để ném ra lỗi, tương tự throw trong java
+// sử dụng defer và panic gần giống với việc sử dụng final try catch trong java
+func deferEx() {
+
+	//call Ham ần danh
+	defer func() {
+		err := recover() // Kiểm tra có lỗi trong hệ thống không , lỗi xảy ra từ pannic có thì tổng hợp vào biến err
+		if err != nil {
+			println("Loi la: ", err)
+		}
+	}()
+	panic("Lỗi chia cho 0") // Ném lỗi này ra khỏi function, hàm nay tương đương với throw exception trong java
+
+	// a := 10
+	// b := 0
+	// c := a / b
+	// println("C: ", c)
+
+	// value := 5
+	// defer changeValue(&value) // Goi hàm này cuối cùng
+	// value = value + 1
+	// println("Value: ", value)
+
+	// defer fmt.Println("1")
+	// defer fmt.Println("2")
+	// fmt.Println("3")
+}
+
+func changeValue(value *int) {
+	println("Value Prepare Change: ", *value)
+	*value = *value + 1
+}
+
+func loop() {
+	for i := 1; i <= 10; i++ {
+		println("value: ", i)
+	}
+
+	m := map[string]int{"vuong": 30, "toan": 22}
+	for _, value := range m {
+		fmt.Println(value)
+	}
 }
 
 // Truyền tham trị ( truyền giá trị vào sv, sv thay đổi thì param truyền vào ko đổi)
@@ -167,17 +213,17 @@ func handleStruct() {
 // 	fmt.Printf("SLICE POINT REF: %v, %v %v, %T\n", len(slicePointRef), cap(slicePointRef), slicePointRef, slicePointRef)
 // }
 
-// func handleMap() {
-// 	// MAP
+func handleMap() {
+	// 	// MAP
 
-// 	// Khởi tạo các  giá trị mặc định
-// 	// var mapStudent map[int64]string = map[int64]string{
-// 	// 	1: "Lan",
-// 	// 	2: "Hung",
-// 	// }
-// 	// Cách khởi tạo map rỗng
-// 	// mapStudent = make(map[int64]string)
-// 	// mapStudent = map[int64]string{}
+	// 	// Khởi tạo các  giá trị mặc định
+	// 	// var mapStudent map[int64]string = map[int64]string{
+	// 	// 	1: "Lan",
+	// 	// 	2: "Hung",
+	// 	// }
+	// 	// Cách khởi tạo map rỗng
+	// 	// mapStudent = make(map[int64]string)
+	// 	// mapStudent = map[int64]string{}
 
 	// Khởi tạo map với key là mảng
 	// var mapStudent2 = map[[3]int64]string{} // Không thể khởi tạo map với key là slice , phải sử dụng mảng
