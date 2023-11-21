@@ -20,25 +20,121 @@ type School struct {
 }
 
 func handleExtend() {
-
 	school := &School{}
 	school.city = "Ha Noi"
 	school.district = "Hoai Duc"
 	school.ward = "An Khanh"
 	school.address = "Van Lung"
 	school.name = "An Khanh A"
-
 	fmt.Println("School Information: ", *school)
+	fmt.Println("School BaseLocation: ", school.BaseLocation)
+}
+
+type Position struct {
+	lat float64
+	lon float64
+}
+
+func (p *Position) SpecialMove(x, y float64) {
+	p.lat = x + x
+	p.lon = y + y
+}
+
+// định nghĩa hàm Move trong object Position
+// p Position: mỗi lần gọi sẽ copy 1 đối tượng mới vào thay đổi trên đối tượng copy sẽ không thay đổi trên đối tượng gốc
+// p *Position: mỗi lần gọi sẽ gọi trên con trỏ trỏ vào đối tượng gốc
+func (p *Position) Move(lat, lon float64) {
+	p.lat += lat
+	p.lon += lon
+}
+
+// định nghĩa hàm Teleport trong object Position
+func (p *Position) Teleport(lat, lon float64) {
+	p.lat = lat
+	p.lon = lon
+}
+
+type SpecialPosition struct {
+	*Position
+}
+
+// Override SpecialMove của Position
+func (p *SpecialPosition) SpecialMove(x, y float64) {
+	p.lat = x * x
+	p.lon = y * y
+}
+
+// Tạo struct player kể thừa thuộc tính từ Position và có 1 biến position kiểu con trỏ
+type Player struct {
+	*Position
+}
+
+type Enmery struct {
+	*SpecialPosition
+}
+
+func createPlayer() *Player {
+	return &Player{
+		Position: &Position{
+			lat: 6,
+			lon: 8,
+		},
+	}
+}
+
+func createEnmery() *Enmery {
+	return &Enmery{
+		SpecialPosition: &SpecialPosition{
+			Position: &Position{
+				lat: 6,
+				lon: 6,
+			},
+		},
+	}
+}
+
+func handleComposition() {
+
+	player := createPlayer()
+	fmt.Println("Player: ", *player.Position)
+	player.Move(5, 5)
+	fmt.Println("Player Move: ", *player.Position)
+	player.Teleport(5, 5)
+	fmt.Println("Player Teleport: ", *player.Position)
+
+	enmery := createEnmery()
+	fmt.Println("Enmery: ", *enmery.Position)
+	enmery.SpecialMove(5, 5)
+	fmt.Println("Enmery SpecialMove: ", *enmery.Position)
 }
 
 func main() {
+
+	// a := []int{1, 2, 3} // slice a trong đó chứa con trỏ trỏ đến phần tử đầu của mảng
+	// b := a              // khởi tạo slice b chứa con trỏ trỏ đến mảng của slice a
+	// c := *&a[2] + 5
+	// fmt.Println(&a[1], &b[2], c) // các ô nhớ trong mảng xếp gần nhau
+
+	m := map[string]string{"vuong": "MALE"}
+	m1 := m
+	fmt.Println(&m, &m1)
+	m["vuong"] = "male"
+	fmt.Println(m, m1)
+
+	// position := new(Position)
+	// fmt.Println(position)
+	// (*position).lat = 5
+	// fmt.Println((*position).lat)
+
+	// handleComposition()
+	// handleExtend()
 	// anynomousStruct()
 	// handleStruct()
 	// handleVariable()
 	// handleArray()
 	// handleSlice()
 	// handleMap()
-	deferEx()
+	// deferEx()
 }
 
 // Thưc hiện lệnh sau defer trước khi hàm return (đưa lệnh vào stack)
