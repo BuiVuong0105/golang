@@ -42,7 +42,7 @@ func (p *Position) SpecialMove(x, y float64) {
 
 // định nghĩa hàm Move trong object Position
 // p Position: mỗi lần gọi sẽ copy 1 đối tượng mới vào thay đổi trên đối tượng copy sẽ không thay đổi trên đối tượng gốc
-// p *Position: mỗi lần gọi sẽ gọi trên con trỏ trỏ vào đối tượng gốc
+// p *Position: mỗi lần gọi sẽ sử dụng con trỏ trỏ tới đối tượng được gọi
 func (p *Position) Move(lat, lon float64) {
 	p.lat += lat
 	p.lon += lon

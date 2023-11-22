@@ -10,7 +10,8 @@ import (
 func goroutineExample() {
 
 	start := time.Now()
-	workerDomain := &domain.WokerDomain{Name: "Vuongbv"}
+	workerDomain := &domain.WokerDomain{}
+	workerDomain.SetName("vuongbv")
 
 	resultChannel := make(chan string)
 	waitGroup := &sync.WaitGroup{}
@@ -37,6 +38,32 @@ func goroutineExample() {
 	close(resultChannel)
 }
 
+// func divide(a, b int) (int, error) {
+// 	if b == 0 {
+// 		return 0, fmt.Errorf("Cannot divide by zero")
+// 	}
+// 	return (a / b), nil
+// }
+
+// func caculate() {
+// 	result, err := divide(5, 0)
+// 	if err != nil {
+// 		fmt.Println("ERROR: ", err)
+// 	} else {
+// 		fmt.Println("RESULT: ", result)
+// 	}
+// }
+
+// func anynomouseFunction() {
+// 	for i := 0; i <= 10; i++ {
+// 		func(i int) {
+// 			fmt.Println("Anynomouse Function: ", i)
+// 		}(i)
+// 	}
+// }
+
 func main() {
 	goroutineExample()
+	// caculate()
+	// anynomouseFunction()
 }
