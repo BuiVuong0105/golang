@@ -10,32 +10,28 @@ import (
 func goroutineExample() {
 
 	start := time.Now()
-	workerDomain := &domain.WokerDomain{}
+	workerDomain := domain.WokerDomain{}
 	workerDomain.SetName("vuongbv")
 
 	resultChannel := make(chan string)
 	waitGroup := &sync.WaitGroup{}
 	waitGroup.Add(3)
-	// go workerDomain.DoWorkWaitGroup(3*time.Second, "Fetch Account", waitGroup)
-	// go workerDomain.DoWorkWaitGroup(2*time.Second, "Get Account By Id", waitGroup)
-	// waitGroup.Wait()
 
 	go workerDomain.DoWork(3*time.Second, "Fetch Account", waitGroup, resultChannel)
 	go workerDomain.DoWork(2*time.Second, "Get Account By Id", waitGroup, resultChannel)
 	go workerDomain.DoWork(5*time.Second, "Search Account", waitGroup, resultChannel)
 
-	// result1 := <-resultChannel
-	// result2 := <-resultChannel
-	// fmt.Printf("Result In Channel: result 1: %v, result 2: %v \n", result1, result2)
-
 	go func() {
-		for res := range resultChannel {
-			fmt.Printf("Result In Channel: %v \n", res)
-		}
-		fmt.Printf("Total Dowork: %v second \n", time.Since(start))
+		waitGroup.Wait()
+		close(resultChannel)
 	}()
-	waitGroup.Wait()
-	close(resultChannel)
+
+	// Lặp vô hạn để liên lục lấy dữ liệu từ channel, sẽ close khi channel bị close
+	for res := range resultChannel {
+		fmt.Printf("Result In Channel: %v \n", res)
+	}
+
+	fmt.Printf("Total Dowork: %v second \n", time.Since(start))
 }
 
 // func divide(a, b int) (int, error) {
@@ -63,7 +59,11 @@ func goroutineExample() {
 // }
 
 func main() {
-	goroutineExample()
+	// goroutineExample()
 	// caculate()
 	// anynomouseFunction()
+	// domain.RunWriter()
+	// domain.RunIncrement()
+	// domain.RunCompose()
+	domain.RunWorkCompose()
 }

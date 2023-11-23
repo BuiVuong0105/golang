@@ -11,6 +11,11 @@ type WokerDomain struct {
 	blance float64
 }
 
+// pointer receiver
+// Chấp nhận cả WorkerDomain hoặc địa chỉ WorkerDomain, nếu truyền struct WorkerDomain thì sẽ tạo ra 1 con trỏ trỏ đến địa chỉ đó.
+// Trong Go, khi bạn gọi một method với một pointer receiver trên một biến kiểu struct, Go sẽ tự động chuyển đổi biến thành một con trỏ tới biến đó (a pointer to the variable) nếu cần thiết.
+// Điều này giúp người lập trình có thể gọi method với cả giá trị và con trỏ mà không cần phải quan tâm đến việc sử dụng pointer hay giá trị.
+
 func (w *WokerDomain) SetName(name string) {
 	w.name = name
 }

@@ -34,6 +34,8 @@ func (s *Store) update(value string) error {
 
 type ExecuteFunction func(string)
 
+// tham số là interface DB có khi gọi hàm có thể chấp nhận 1 con trỏ hoặc 1 giá trị của struct mà implement interface DB đó
+// Trong Go, interface DB trong trường hợp của bạn không phải là một con trỏ, nhưng nó có thể giữ tham chiếu đến một giá trị cụ thể, bao gồm cả con trỏ.
 func MyExecuteFunction(db DB) ExecuteFunction {
 	return func(s string) {
 		db.connect(s)
