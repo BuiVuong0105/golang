@@ -29,7 +29,8 @@ func (w *WokerDomain) IncrementBlance(amount float64) float64 {
 	return w.blance
 }
 
-func (w *WokerDomain) DoWork(duration time.Duration, workName string, waitGroup *sync.WaitGroup, channel chan string) {
+// Channel Write canot Read
+func (w *WokerDomain) DoWork(duration time.Duration, workName string, waitGroup *sync.WaitGroup, channel chan<- string) {
 	fmt.Printf("Begin Working: %s - %s \n", w.name, workName)
 	time.Sleep(duration)
 	fmt.Printf("Done Work: %s - %s \n", w.name, workName)
@@ -37,9 +38,26 @@ func (w *WokerDomain) DoWork(duration time.Duration, workName string, waitGroup 
 	waitGroup.Done()
 }
 
-func (w *WokerDomain) DoWorkChannel(duration time.Duration, workName string, channel chan string) {
+// Channel Write canot Read
+func (w *WokerDomain) DoWorkChannel(duration time.Duration, workName string, channel chan<- string) {
 	fmt.Printf("Begin Working: %s - %s \n", w.name, workName)
 	time.Sleep(duration)
 	fmt.Printf("Done Work: %s - %s \n", w.name, workName)
 	channel <- workName
+}
+
+// Channel Read canot Write
+func (w *WokerDomain) ReadChannel(channel <-chan string) {
+	// Lặp vô hạn để liên lục lấy dữ liệu từ channel, sẽ close khi channel bị close
+	// for res := range channel {
+	// 	fmt.Printf("Result In Channel: %v \n", res)
+	// }
+
+	for {
+		if res, success := <-channel; success {
+			fmt.Printf("Result In Channel: %v \n", res)
+		} else {
+			break
+		}
+	}
 }

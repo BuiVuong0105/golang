@@ -13,11 +13,12 @@ func goroutineExample() {
 	workerDomain := domain.WokerDomain{}
 	workerDomain.SetName("vuongbv")
 
-	resultChannel := make(chan string)
+	// Sử dụng channel thì việc gửi và nhận phải ở trong các gorountine khác nhau, khi gửi vào thì nếu vượt quá buffer mà channel không có ai đăng ký nhận sẽ bị báo lỗi
+	resultChannel := make(chan string, 10)
 	waitGroup := &sync.WaitGroup{}
 	waitGroup.Add(3)
 
-	go workerDomain.DoWork(3*time.Second, "Fetch Account", waitGroup, resultChannel)
+	go workerDomain.DoWork(1*time.Second, "Fetch Account", waitGroup, resultChannel)
 	go workerDomain.DoWork(2*time.Second, "Get Account By Id", waitGroup, resultChannel)
 	go workerDomain.DoWork(5*time.Second, "Search Account", waitGroup, resultChannel)
 
@@ -26,10 +27,7 @@ func goroutineExample() {
 		close(resultChannel)
 	}()
 
-	// Lặp vô hạn để liên lục lấy dữ liệu từ channel, sẽ close khi channel bị close
-	for res := range resultChannel {
-		fmt.Printf("Result In Channel: %v \n", res)
-	}
+	workerDomain.ReadChannel(resultChannel)
 
 	fmt.Printf("Total Dowork: %v second \n", time.Since(start))
 }
@@ -65,5 +63,21 @@ func main() {
 	// domain.RunWriter()
 	// domain.RunIncrement()
 	// domain.RunCompose()
-	domain.RunWorkCompose()
+	// domain.RunWorkCompose()
+	// domain.RunInterface()
+
+	wg := sync.WaitGroup{}
+	wg.Add(2)
+	resultChannel := make(chan int, 2)
+
+	go func() {
+		fmt.Println("RS: ", <-resultChannel) // Đoc channel nếu đọc mà không có data thì báo lỗi
+		wg.Done()
+	}()
+
+	go func() {
+		resultChannel <- 42 // khi gửi vào thì nếu vượt quá buffer mà channel không có ai đăng ký nhận sẽ bị báo lỗi
+		wg.Done()
+	}()
+	wg.Wait()
 }
