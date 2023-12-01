@@ -90,7 +90,14 @@ func runTimeOut() {
 	fmt.Println("Main program continues")
 }
 
+func test() {
+	fmt.Println("TEST")
+}
+
 func main() {
+	test := test
+	test()
+	fmt.Println()
 	// goroutineExample()
 	// caculate()
 	// anynomouseFunction()
@@ -100,7 +107,7 @@ func main() {
 	// domain.RunWorkCompose()
 	// domain.RunInterface()
 	// domain.CaculateSQRT()
-	runTimeOut()
+	// runTimeOut()
 
 	// wg := sync.WaitGroup{}
 	// wg.Add(2)
